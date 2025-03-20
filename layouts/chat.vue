@@ -1,5 +1,6 @@
 <script setup lang="ts">
-
+const mainScrollContainer = ref<HTMLElement | null>(null)
+provide('mainScrollContainer', mainScrollContainer)
 </script>
 
 <template>
@@ -8,7 +9,7 @@
       <ChatSidebar />
     </div>
 
-    <main class="flex-1 overflow-auto">
+    <main ref="mainScrollContainer" class="flex-1 overflow-auto">
       <NuxtPage />
     </main>
   </div>
