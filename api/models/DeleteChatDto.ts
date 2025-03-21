@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateChatDto = {
-    userId?: number;
-    title?: string;
-    message: string;
+export type DeleteChatDto = {
+    chatId: number;
 };
 

@@ -91,7 +91,7 @@ const _buildQueryMessages = () => {
     content: chatStore.prompt
   })
   // history messages and current message
-  messages.push(currentChatMessages.value.map(m => {
+  messages.push(...currentChatMessages.value.map(m => {
     return {
       role: mapRole(m.role!),
       content: m.content!
@@ -110,7 +110,7 @@ const chatCompletion = async (isFirst: boolean | undefined = false) => {
   const messages = _buildQueryMessages()
   loadingCompletion.value = true
 
-  const response = await fetch('/api/chatdemo', { // TODO debug
+  const response = await fetch('/api/chat', { // TODO debug
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -166,9 +166,9 @@ const chatCompletion = async (isFirst: boolean | undefined = false) => {
     <MessageArea v-for="message in currentChatMessages" :chat-message="message" class="my-8"/>
     <MessageArea v-if="streamingMessage" :chat-message="{role: MessageRoleEnum.ASSISTANT, content: streamingMessage}"
                  class="my-8"/>
-    <UContainer v-if="displayToBottom" class="fixed bottom-56 w-full h-fit flex justify-center">
+    <UContainer v-if="displayToBottom" class="fixed bottom-56 w-full h-fit flex justify-center" @click="() => scrollToBottom('smooth')">
       <UAvatar as="div" icon="i-lucide-arrow-down" size="2xl" class="shadow-xl"
-               @click="() => scrollToBottom('smooth')"/>
+               />
     </UContainer>
     <ChatInputField class="fixed bottom-0 justify-items-center w-full
                            bg-gradient-to-t from-white via-white to-transparent"

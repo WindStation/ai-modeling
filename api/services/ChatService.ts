@@ -5,6 +5,8 @@
 import type { AppendMessageDto } from '../models/AppendMessageDto';
 import type { Chat } from '../models/Chat';
 import type { CreateChatDto } from '../models/CreateChatDto';
+import type { DeleteChatDto } from '../models/DeleteChatDto';
+import type { UpdateChatDto } from '../models/UpdateChatDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ChatService {
@@ -20,6 +22,21 @@ export class ChatService {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/chat/append',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns Chat OK
+     * @throws ApiError
+     */
+    public updateChat(
+        requestBody: UpdateChatDto,
+    ): CancelablePromise<Chat> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/chat/update',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -95,6 +112,21 @@ export class ChatService {
             path: {
                 'id': id,
             },
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns any OK
+     * @throws ApiError
+     */
+    public deleteChat(
+        requestBody: DeleteChatDto,
+    ): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/api/chat/delete',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 }

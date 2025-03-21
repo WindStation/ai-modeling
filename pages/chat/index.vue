@@ -11,7 +11,14 @@ const chatStore = useChatStore()
 const router = useRouter()
 
 async function createChat(text: string) {
-  const chat = await chatStore.initNewChat(text)
+  // 简单设置标题
+  let title: string
+  if (text.length <= 15) {
+    title = text
+  } else {
+    title = text.slice(0, 15) + "..."
+  }
+  const chat = await chatStore.initNewChat(text, title)
   await router.push(`/chat/${chat.id}`)
 }
 

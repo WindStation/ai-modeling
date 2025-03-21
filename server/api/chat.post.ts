@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
 
     const openai = new OpenAI({
         baseURL: "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/fd53915b-8935-48fe-be70-449d76c0fc87/v1",
-        apiKey: config.dsApiKey.huawei
+        apiKey: config.dsApikey.huawei
     })
 
     const stream = await openai.chat.completions.create({

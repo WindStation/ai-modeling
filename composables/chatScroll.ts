@@ -10,7 +10,6 @@ export const useChatScroll = (container: Ref<HTMLElement | null>) => {
     const scrollToBottom = (behavior: ScrollBehavior | undefined = "smooth") => {
         nextTick(() => {
             if (container.value) {
-                console.log("container dom exists. Scrolling.")
                 container.value.scrollTo({
                     top: container.value.scrollHeight,
                     behavior: behavior,

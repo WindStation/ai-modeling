@@ -19,8 +19,8 @@ export const useChatStore = defineStore('chat', () => {
         return await apiClient.message.getChatMessages(chatId)
     }
 
-    async function initNewChat(content: string) {
-        const newChat = await apiClient.chat.createChat({ message: content } as CreateChatDto)
+    async function initNewChat(content: string, title: string | undefined = undefined) {
+        const newChat = await apiClient.chat.createChat({ message: content, title: title } as CreateChatDto)
         pendingChatId.value = newChat.id
         return newChat
     }
@@ -31,5 +31,15 @@ export const useChatStore = defineStore('chat', () => {
         })
     }
 
-    return { chats, prompt, pendingChatId, fetchSelfChats, initNewChat, getChatMessages, appendChatMessage }
+    async function updateChatTitle(chatId: number, title: string) {
+        await apiClient.chat.updateChat({
+            chatId: chatId, title: title
+        })
+    }
+
+    async function deleteChat(chatId: number) {
+        await apiClient.chat.deleteChat({chatId: chatId})
+    }
+
+    return { chats, prompt, pendingChatId, fetchSelfChats, initNewChat, getChatMessages, appendChatMessage, updateChatTitle, deleteChat }
 })

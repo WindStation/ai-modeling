@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 space-y-2 flex flex-col  h-full">
     <div class="flex-1">
-      <AiModelingIcon />
+      <AiModelingIcon/>
 
       <UButton
           label="新对话"
@@ -10,19 +10,37 @@
           variant="soft"
           @click="newChat"
       />
-
+      <EditChatTitleModal ref="editModal" :chat-id="targetChatId" :origin-title="targetChatTitle"/>
+      <DeleteChatModal ref="deleteModal" :chat-id="targetChatId"/>
 
       <nav class="space-y-1 overflow-y-auto max-h-8/12">
         <NuxtLink
             v-for="chat in chatStore.chats"
             :key="chat.id"
             :to="`/chat/${chat.id}`"
-            class="block rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            class="flex justify-between items-center rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             :class="{
           'bg-primary-50 dark:bg-primary-900': route.params.id === chat.id.toString()
         }"
         >
-          <div class="text-md font-medium truncate">{{ chat.title }}</div>
+          <div class="text-md font-medium truncate overflow-x-clip">{{ chat.title }}</div>
+          <UPopover>
+            <UButton size="sm" variant="ghost" color="neutral" icon="i-lucide-ellipsis-vertical"/>
+            <template #content>
+              <UNavigationMenu class="p-2" orientation="vertical" :items="[
+                {
+                  label: '修改标题',
+                  icon: 'i-lucide-pen-line',
+                  onSelect: () => {handleOpenEditModal(chat.id, chat.title)}
+                },
+                {
+                  label: '删除聊天',
+                  icon: 'i-lucide-trash-2',
+                  onSelect: () => {handleOpenDeleteModal(chat.id)}
+                }
+              ]"/>
+            </template>
+          </UPopover>
         </NuxtLink>
       </nav>
     </div>
@@ -61,20 +79,34 @@ const menuItems = [
       {
         label: "退出登录",
         icon: "i-material-symbols-exit-to-app",
-        onSelect: () => {console.log("退出登录")}
+        onSelect: () => {
+          console.log("退出登录")
+        }
       }
     ]
   }
 ]
 
+
 const newChat = () => {
   router.push("/chat")
 }
 
-// const createNewChat = () => {
-//   const tempId = `temp_${crypto.randomUUID()}`
-//   appendChat({ id: tempId, title: `Chat ${tempId}` })
-//   router.push(`/chat/${tempId}`)
-// }
+// 模态框相关
+const targetChatId = ref(0)
+const targetChatTitle = ref("")
+const editModal = ref()
+const deleteModal = ref()
+
+const handleOpenEditModal = (chatId: number, title: string) => {
+  targetChatId.value = chatId
+  targetChatTitle.value = title
+  editModal.value.openThisModal()
+}
+
+const handleOpenDeleteModal = (chatId: number) => {
+  targetChatId.value = chatId
+  deleteModal.value.openThisModal()
+}
 
 </script>
