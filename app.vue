@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import AppHeader from "~/components/AppHeader.vue"
+import { useUserStore } from "~/store/user";
 
-const headerLinks = [
-  { label: '文档', to: '/docs' },
-  { label: '案例', to: '/cases' }
-]
+const userStore = useUserStore()
+onMounted(() => userStore.init())
 </script>
 <!--<template>-->
 <!--  <NuxtLayout>-->

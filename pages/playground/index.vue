@@ -1,16 +1,30 @@
 <script setup lang="ts">
-import { UmlService } from "~/api";
+import { useUserStore } from "~/store/user";
+
+
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+const { decode } = useTextCodec()
+
+const isLogin = computed(() => userStore.user !== null)
+const userAccount = computed(() => {
+  if (userStore.user) {
+    return userStore.user.account!
+  }
+})
 
 const menuItems = [
   {
-    label: "用户",
+    label: userAccount,
     icon: "i-material-symbols-person",
     children: [
       {
         label: "退出登录",
         icon: "i-material-symbols-exit-to-app",
         onSelect: () => {
-          console.log("退出登录")
+          userStore.logout()
+          router.push("/")
         }
       },
       {
@@ -27,12 +41,24 @@ const isGenerating = ref(false)
 const isImageLoading = ref(false)
 const imageError = ref(null)
 
+// 检测是否有query参数
+onMounted(() => {
+  if (route.query.code) {
+    plantuml.value = decode(route.query.code as string)
+    generateUml()
+  }
+})
+
+
 // 生成 UML 图表
 const generateUml = async () => {
   if (!plantuml.value.trim()) {
     useToast().add({ title: '请输入 PlantUML 代码', color: 'error' })
   }
-
+  // 加上分辨率设置，确保图表清晰
+  const regex = /(@startuml\b.*?)(\r?\n)/
+  plantuml.value = plantuml.value.replace(regex, '$1$2skinparam dpi 300\n')
+  console.log(`Generating uml pic.\n${plantuml.value}`)
   try {
     isGenerating.value = true
     imageError.value = null
@@ -101,7 +127,10 @@ onBeforeUnmount(() => {
     <UContainer as="h2" class="text-2xl font-bold ">Playground</UContainer>
 
     <template #right>
-      <UNavigationMenu :items="menuItems" content-orientation="vertical" class="w-full justify-end" />
+      <UNavigationMenu v-if="isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />
+      <UButton v-else>
+        <NuxtLink to="/login">登录</NuxtLink>
+      </UButton>
       <UButton label="AI Modeling Chat" icon="i-lucide-message-circle-code" size="lg" to="/chat" />
     </template>
 
@@ -118,7 +147,7 @@ onBeforeUnmount(() => {
       </div>
 
     </UCard>
-    <UCard class="w-full flex flex-col justify-center align-middle">
+    <UCard class="w-full flex flex-col justify-center align-middle" >
       <div v-if="imageUrl === null" class="text-2xl h-full flex justify-center">生成的UML图会在这里展示</div>
       <div v-else class="w-full h-full">
         <img :src="imageUrl" alt="UML图" @load="handleImageLoad" @error="handleImageError" />

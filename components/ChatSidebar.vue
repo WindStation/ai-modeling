@@ -56,15 +56,8 @@ import { useUserStore } from "~/store/user";
 
 const route = useRoute()
 const router = useRouter()
+
 const chatStore = useChatStore()
-const userStore = useUserStore()
-
-const fetchData = async () => {
-  await userStore.info()
-  await chatStore.fetchSelfChats()
-}
-
-onMounted(() => fetchData())
 
 const menuItems = [
   {

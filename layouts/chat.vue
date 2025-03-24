@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import { useChatStore } from "~/store/chat";
+import { useUserStore } from "~/store/user";
+
 const mainScrollContainer = ref<HTMLElement | null>(null)
 provide('mainScrollContainer', mainScrollContainer)
+
+const chatStore = useChatStore()
+const userStore = useUserStore()
+
+const fetchData = async () => {
+  await userStore.info()
+  await chatStore.fetchSelfChats()
+}
+
+onBeforeMount(async () => await fetchData())
 </script>
 
 <template>

@@ -20,8 +20,9 @@ export const useChatStore = defineStore('chat', () => {
     }
 
     async function initNewChat(content: string, title: string | undefined = undefined) {
-        const newChat = await apiClient.chat.createChat({ message: content, title: title } as CreateChatDto)
+        const newChat = await apiClient.chat.createChat({ message: content, title: title } as CreateChatDto)    // 持久化
         pendingChatId.value = newChat.id
+        chats.value.unshift(newChat)    // store中也同步一下
         return newChat
     }
 

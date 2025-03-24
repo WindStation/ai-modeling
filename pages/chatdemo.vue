@@ -36,6 +36,35 @@ const chatStore = reactive({
 
 const loading = ref(false)
 
+let mockData = `## UML和MDC自定义组件测试
+这是Java code
+\`\`\`java
+class DemoCode {
+    String a;
+}
+\`\`\`
+
+这是PlantUML code
+\`\`\`plantuml
+@startuml
+Bob -> Alice : hello
+@enduml
+\`\`\`
+
+`
+
+const encode = (code: string) => {
+  const encoder = new TextEncoder()
+  return btoa(Array.from(encoder.encode(code), byte => String.fromCharCode(byte)).join(''))
+}
+
+const regex = /```plantuml\n([\s\S]*?)\n```/g
+mockData = mockData.replace(regex, (match, code) => {
+  return `::uml-code-display{code="${encode(code)}"}\n${match}\n::`
+})
+
+chatStore.messages.push(mockData)
+
 const fetchStream = async () => {
   const response = await fetch('/api/chatdemo', {
     method: 'POST',

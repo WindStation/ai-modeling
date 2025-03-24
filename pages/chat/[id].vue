@@ -11,14 +11,15 @@ const router = useRouter()
 const chatId = route.params.id
 
 const chatStore = useChatStore()
-const { chats } = useChatStore()
-const currentChat = computed(() => chats.find(c => c.id.toString() === chatId)) // 用于检查chat id是否确实是当前用户的chat
+const currentChat = computed(() => chatStore.chats.find(c => c.id.toString() === chatId)) // 用于检查chat id是否确实是当前用户的chat
 const currentChatMessages = ref<Partial<Message>[]>([])
 const streamingMessage = ref<string | null>(null)
 
 const checkAndFetchMessages = async () => {
-  await nextTick()
-  if (currentChat) {
+  if (chatStore.chats.length === 0) { // 防止刷新时，chat store还未获取完毕导致的逻辑错误
+    await chatStore.fetchSelfChats()
+  }
+  if (currentChat.value) {
     currentChatMessages.value = await chatStore.getChatMessages(Number(chatId))
   } else {
     await router.push("/chat/error")
@@ -100,7 +101,7 @@ const _buildQueryMessages = () => {
   // // current question
   // messages.push({
   //   role: "user",
-  //   content: question
+  //   mdc: question
   // })
   console.log(messages) // debug
   return messages
@@ -163,8 +164,8 @@ const chatCompletion = async (isFirst: boolean | undefined = false) => {
   <!--    </UContainer>-->
   <!--  </div>-->
   <UContainer class="pb-40">
-    <MessageArea v-for="message in currentChatMessages" :chat-message="message" class="my-8"/>
-    <MessageArea v-if="streamingMessage" :chat-message="{role: MessageRoleEnum.ASSISTANT, content: streamingMessage}"
+    <MessageArea v-for="message in currentChatMessages" :chat-message="message"  class="my-8"/>
+    <MessageArea v-if="streamingMessage" :chat-message="{role: MessageRoleEnum.ASSISTANT, content: streamingMessage}" loading
                  class="my-8"/>
     <UContainer v-if="displayToBottom" class="fixed bottom-56 w-full h-fit flex justify-center" @click="() => scrollToBottom('smooth')">
       <UAvatar as="div" icon="i-lucide-arrow-down" size="2xl" class="shadow-xl"

@@ -1,5 +1,5 @@
 import { rand } from "@vueuse/shared";
-import { apiClient } from "~/composables/request";
+import { apiClient } from "~/composables/useRequest";
 import { MessageRoleEnum } from "~/api";
 import axios from "axios";
 
@@ -68,7 +68,7 @@ class DemoCode {
             // apiClient.chat.appendChatMessage({
             //     chatId: chatId,
             //     role: MessageRoleEnum.ASSISTANT,
-            //     content: text
+            //     mdc: text
             // })
             await axios.put('http://localhost:8080/api/chat/append', {
                 chatId: chatId, role: MessageRoleEnum.ASSISTANT, content: text

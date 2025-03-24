@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { apiClient } from "~/composables/request"
+import { apiClient } from "~/composables/useRequest"
 import { MessageRoleEnum } from "~/api";
 import axios from "axios";
 
