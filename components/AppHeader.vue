@@ -5,7 +5,9 @@
     </template>
 
     <template #right>
+      <UserMenu v-if="userAccount" orientation="vertical" class="w-full justify-end" />
       <UButton
+          v-else
           variant="outline"
           size="lg"
           label="登录"
@@ -23,5 +25,9 @@
   </UHeader>
 </template>
 <script setup lang="ts">
-import AiModelingIcon from "~/components/AiModelingIcon.vue";
+// import AiModelingIcon from "~/components/AiModelingIcon.vue";
+import { useUserStore } from "~/store/user";
+
+const userStore = useUserStore()
+const userAccount = userStore.user?.account
 </script>

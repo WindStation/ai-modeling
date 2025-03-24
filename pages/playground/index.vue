@@ -1,39 +1,20 @@
 <script setup lang="ts">
 import { useUserStore } from "~/store/user";
 
+useHead({
+  title: "UML Playground - AI Modeling"
+})
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const { decode } = useTextCodec()
 
-const isLogin = computed(() => userStore.user !== null)
 const userAccount = computed(() => {
   if (userStore.user) {
     return userStore.user.account!
   }
 })
-
-const menuItems = [
-  {
-    label: userAccount,
-    icon: "i-material-symbols-person",
-    children: [
-      {
-        label: "退出登录",
-        icon: "i-material-symbols-exit-to-app",
-        onSelect: () => {
-          userStore.logout()
-          router.push("/")
-        }
-      },
-      {
-        label: "测试",
-        icon: "i-lucide-rocket"
-      }
-    ]
-  }
-]
 
 const plantuml = ref('')
 const imageUrl = ref<string | null>(null)
@@ -54,11 +35,11 @@ onMounted(() => {
 const generateUml = async () => {
   if (!plantuml.value.trim()) {
     useToast().add({ title: '请输入 PlantUML 代码', color: 'error' })
+    return
   }
   // 加上分辨率设置，确保图表清晰
   const regex = /(@startuml\b.*?)(\r?\n)/
   plantuml.value = plantuml.value.replace(regex, '$1$2skinparam dpi 300\n')
-  console.log(`Generating uml pic.\n${plantuml.value}`)
   try {
     isGenerating.value = true
     imageError.value = null
@@ -127,8 +108,9 @@ onBeforeUnmount(() => {
     <UContainer as="h2" class="text-2xl font-bold ">Playground</UContainer>
 
     <template #right>
-      <UNavigationMenu v-if="isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />
-      <UButton v-else>
+<!--      <UNavigationMenu v-if="userStore.isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />-->
+      <UserMenu v-if="userAccount" orientation="vertical" class="w-full justify-end" />
+      <UButton v-else size="lg">
         <NuxtLink to="/login">登录</NuxtLink>
       </UButton>
       <UButton label="AI Modeling Chat" icon="i-lucide-message-circle-code" size="lg" to="/chat" />

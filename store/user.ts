@@ -3,6 +3,7 @@ import type { User } from "~/api";
 export const useUserStore = defineStore("user", () => {
     const user = ref<User | null>(null)
     const isInit = ref(false)
+    const isLogin = computed(() => user.value !== null)
 
     async function login(username: string, password: string) {
         const token = await apiClient.auth.login({
@@ -33,5 +34,5 @@ export const useUserStore = defineStore("user", () => {
         }
     }
 
-    return { user, login, logout, register, info, init }
+    return { user, isLogin, login, logout, register, info, init }
 })

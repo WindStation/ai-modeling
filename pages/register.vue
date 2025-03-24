@@ -2,7 +2,9 @@
 import * as z from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 import { useUserStore } from "~/store/user";
-
+useHead({
+  title: "注册 - AI Modeling"
+})
 const formFields = [
   {
     name: "username",

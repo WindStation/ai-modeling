@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+useHead({
+  title: "AI Modeling - 基于大语言模型的智能软件建模平台，支持实时UML编辑预览"
+})
 
 const pngs = [
   "assets/img/uml-demo.png",
@@ -27,6 +29,25 @@ const pngs = [
         <UContainer as="p" class="text-xl text-gray-600 dark:text-gray-300">
           基于大语言模型的智能软件建模平台，支持实时UML编辑预览
         </UContainer>
+      </div>
+
+      <div class="flex justify-center mt-40">
+        <UContainer class="text-6xl w-fit m-0 flex items-center">立即开始&nbsp;<UIcon name="i-lucide-arrow-right" /> </UContainer>
+        <UContainer class="flex m-0 flex-col justify-center space-y-6">
+          <div class="border-3 rounded-[1.3rem] bg-black bg-clip-border">
+            <UButton class="w-90 h-25 justify-center text-3xl rounded-[1rem]" color="neutral"  >
+              <NuxtLink to="/playground">UML Playground</NuxtLink>
+            </UButton>
+          </div>
+
+          <div class="border-3 rounded-[1.1rem] bg-gradient-to-br from-purple-600 to-blue-500 border-transparent bg-clip-border">
+            <UButton class="w-90 h-25 justify-center text-3xl rounded-[1rem] bg-white" color="neutral" variant="ghost">
+              <NuxtLink to="/chat">Modeling Chat</NuxtLink>
+            </UButton>
+          </div>
+
+        </UContainer>
+
       </div>
 
       <!-- 功能展示 -->

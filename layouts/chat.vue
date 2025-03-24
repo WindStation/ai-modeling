@@ -2,6 +2,10 @@
 import { useChatStore } from "~/store/chat";
 import { useUserStore } from "~/store/user";
 
+useHead({
+  title: "Chat - AI Modeling"
+})
+
 const mainScrollContainer = ref<HTMLElement | null>(null)
 provide('mainScrollContainer', mainScrollContainer)
 
