@@ -41,6 +41,4 @@ const menuItems = [
   <UNavigationMenu :items="menuItems" :content-orientation="orientation" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

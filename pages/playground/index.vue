@@ -39,12 +39,12 @@ const generateUml = async () => {
   }
   // 加上分辨率设置，确保图表清晰
   const regex = /(@startuml\b.*?)(\r?\n)/
-  plantuml.value = plantuml.value.replace(regex, '$1$2skinparam dpi 300\n')
+  const targetPlantUml = plantuml.value.replace(regex, '$1$2skinparam dpi 300\n')
   try {
     isGenerating.value = true
     imageError.value = null
 
-    const response = await apiClient.uml.generateUml(plantuml.value)
+    const response = await apiClient.uml.generateUml(targetPlantUml)
     // 创建临时 URL
     const url = URL.createObjectURL(response)
     // 清理旧 URL
@@ -91,6 +91,22 @@ const downloadImage = () => {
   document.body.removeChild(link)
 }
 
+const copyToClipboard = async () => {
+  try {
+    await navigator.clipboard.writeText(plantuml.value)
+    useToast().add({
+      title: '复制成功',
+      color: 'success'
+    })
+  } catch (err) {
+    useToast().add({
+      title: '复制失败',
+      description: '请手动复制',
+      color: 'error'
+    })
+  }
+}
+
 // 组件卸载时清理资源
 onBeforeUnmount(() => {
   if (imageUrl.value) {
@@ -108,28 +124,48 @@ onBeforeUnmount(() => {
     <UContainer as="h2" class="text-2xl font-bold ">Playground</UContainer>
 
     <template #right>
-<!--      <UNavigationMenu v-if="userStore.isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />-->
+      <!--      <UNavigationMenu v-if="userStore.isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />-->
       <UserMenu v-if="userAccount" orientation="vertical" class="w-full justify-end" />
       <UButton v-else size="lg">
         <NuxtLink to="/login">登录</NuxtLink>
       </UButton>
-      <UButton label="AI Modeling Chat" icon="i-lucide-message-circle-code" size="lg" to="/chat" />
+      <div
+        class="border-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 border-transparent bg-clip-border whitespace-nowrap">
+        <UButton class="justify-center rounded-md bg-white px-4" color="neutral" variant="ghost" size="lg" to="/chat">
+          <UIcon name="i-lucide-message-circle-code" class="mr-2" />
+          <span>AI Modeling Chat</span>
+        </UButton>
+      </div>
     </template>
-
-
   </UHeader>
+
   <UContainer class="max-w-[100rem] flex gap-2 my-10 ">
     <UCard class="w-7/12 gap-2">
-      <UContainer class="text-2xl my-6">在此输入 PlantUML</UContainer>
-      <UTextarea id="pg-uml-input" size="xl" :rows="30" class="w-full shadow-xl rounded-2xl"
+      <div class="flex justify-between items-center px-5">
+        <div class="text-2xl my-6">在此输入 PlantUML</div>
+        <UButton size="lg" variant="solid" color="neutral" @click="copyToClipboard">复制</UButton>
+      </div>
+
+      <UTextarea id="pg-uml-input" size="xl" :rows="30" class="w-full shadow-xl rounded-2xl font-mono"
         :placeholder="'@startuml\n\n<...>\n\n@enduml'" v-model="plantuml" />
-      <div class="w-full flex justify-center gap-2">
-        <UButton icon="i-lucide-rocket" class="mt-8 " size="xl" :disable="isGenerating" @click="generateUml">生成
+      <div class="w-full flex flex-col justify-center gap-2 px-4 space-y-5">
+        <UButton icon="i-lucide-rocket" class="mt-8 flex flex-1 justify-center" size="xl" :disable="isGenerating"
+          @click="generateUml">
+          生成
         </UButton>
+        <UDrawer direction="right">
+          <UButton class="flex flex-1 justify-center" size="xl" color="neutral" variant="outline">
+            遇到问题？问问 Modeling Chat!
+          </UButton>
+          <template #content>
+            <EmbeddedChat :plantuml-code="plantuml" />
+          </template>
+        </UDrawer>
+
       </div>
 
     </UCard>
-    <UCard class="w-full flex flex-col justify-center align-middle" >
+    <UCard class="w-full flex flex-col justify-center align-middle">
       <div v-if="imageUrl === null" class="text-2xl h-full flex justify-center">生成的UML图会在这里展示</div>
       <div v-else class="w-full h-full">
         <img :src="imageUrl" alt="UML图" @load="handleImageLoad" @error="handleImageError" />

@@ -164,17 +164,15 @@ const chatCompletion = async (isFirst: boolean | undefined = false) => {
   <!--    </UContainer>-->
   <!--  </div>-->
   <UContainer class="pb-40">
-    <MessageArea v-for="message in currentChatMessages" :chat-message="message"  class="my-8"/>
-    <MessageArea v-if="streamingMessage" :chat-message="{role: MessageRoleEnum.ASSISTANT, content: streamingMessage}" loading
-                 class="my-8"/>
-    <UContainer v-if="displayToBottom" class="fixed bottom-56 w-full h-fit flex justify-center" @click="() => scrollToBottom('smooth')">
-      <UAvatar as="div" icon="i-lucide-arrow-down" size="2xl" class="shadow-xl"
-               />
+    <MessageArea v-for="message in currentChatMessages" :chat-message="message" class="my-8" />
+    <MessageArea v-if="streamingMessage" :chat-message="{ role: MessageRoleEnum.ASSISTANT, content: streamingMessage }"
+      loading class="my-8" />
+    <UContainer v-if="displayToBottom" class="fixed bottom-56 w-full h-fit flex justify-center"
+      @click="() => scrollToBottom('smooth')">
+      <UAvatar as="div" icon="i-lucide-arrow-down" size="2xl" class="shadow-xl" />
     </UContainer>
     <ChatInputField class="fixed bottom-0 justify-items-center w-full
-                           bg-gradient-to-t from-white via-white to-transparent"
-                    @send="sendQuestion"
-    />
+                           bg-gradient-to-t from-white via-white to-transparent" @send="sendQuestion" />
   </UContainer>
   <UContainer>
 

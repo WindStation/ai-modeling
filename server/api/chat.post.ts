@@ -9,7 +9,7 @@ export default defineEventHandler(async event => {
     const { messages, chatId } = await readBody(event)
 
     const openai = new OpenAI({
-        baseURL: "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/fd53915b-8935-48fe-be70-449d76c0fc87/v1",
+        baseURL: "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
         apiKey: config.dsApikey.huawei
     })
 

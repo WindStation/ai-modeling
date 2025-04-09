@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useChatStore } from "~/store/chat";
 import { useUserStore } from "~/store/user";
+import axios from "axios";
 
 useHead({
   title: "Chat - AI Modeling"

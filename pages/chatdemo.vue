@@ -95,31 +95,33 @@ const fetchStream = async () => {
 </script>
 
 <template>
-<UApp>
-  <UCard class="mx-52 mt-6 p-6 flex flex-1 flex-col ">
-    <UButton :on-click="fetchStream" class="w-28 h-16 my-5 justify-self-center justify-center block" color="primary">开始生成</UButton>
-<!--    <UCard v-for="block in chatStore.messages" class="my-5 block w-4xl">-->
-<!--      <div class="mdc-container flex flex-col mx-6">-->
-<!--        <div class="prose">-->
-<!--          <MDC :value="block" />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </UCard>-->
+  <UApp>
+    <UCard class="mx-52 mt-6 p-6 flex flex-1 flex-col ">
+      <UButton :on-click="fetchStream" class="w-28 h-16 my-5 justify-self-center justify-center" color="primary">
+        开始生成</UButton>
+      <!--    <UCard v-for="block in chatStore.messages" class="my-5 block w-4xl">-->
+      <!--      <div class="mdc-container flex flex-col mx-6">-->
+      <!--        <div class="prose">-->
+      <!--          <MDC :value="block" />-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--    </UCard>-->
 
-<!--    <UCard v-if="chatStore.streamingMsg" class="my-5 block w-4xl">-->
-<!--      <div class="mdc-container flex flex-col mx-6">-->
-<!--        <div class="prose ">-->
-<!--          <MDC :value="chatStore.streamingMsg + ' ●'" />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </UCard>-->
-      <MessageArea v-for="block in chatStore.messages" :chat-message="{role: MessageRoleEnum.ASSISTANT, content: block}" class="w-full" />
-      <MessageArea v-if="chatStore.streamingMsg" loading :chat-message="{role: MessageRoleEnum.ASSISTANT, content: chatStore.streamingMsg!}" />
+      <!--    <UCard v-if="chatStore.streamingMsg" class="my-5 block w-4xl">-->
+      <!--      <div class="mdc-container flex flex-col mx-6">-->
+      <!--        <div class="prose ">-->
+      <!--          <MDC :value="chatStore.streamingMsg + ' ●'" />-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--    </UCard>-->
+      <MessageArea v-for="block in chatStore.messages"
+        :chat-message="{ role: MessageRoleEnum.ASSISTANT, content: block }" class="w-full" />
+      <MessageArea v-if="chatStore.streamingMsg" loading
+        :chat-message="{ role: MessageRoleEnum.ASSISTANT, content: chatStore.streamingMsg! }" />
 
 
-  </UCard>
-</UApp>
+    </UCard>
+  </UApp>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

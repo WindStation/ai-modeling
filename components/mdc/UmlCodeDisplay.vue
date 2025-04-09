@@ -50,20 +50,19 @@ const handleEditInPlayground = () => {
 
 <template>
   <UCard>
-    <UTabs :items="tabItems" color="neutral" variant="link" :ui="{trigger: 'flex-1'}">
+    <UTabs :items="tabItems" color="neutral" variant="link" :ui="{ trigger: 'flex-1' }">
       <template #plantuml>
-        <MDCSlot unwrap="p"/>
+        <MDCSlot unwrap="p" />
       </template>
       <template #uml>
-        <img v-if="imageUrl" :src="imageUrl" alt="UML图"/>
+        <img v-if="imageUrl" :src="imageUrl" alt="UML图" />
         <UButton v-else loading variant="ghost" color="neutral">加载中</UButton>
       </template>
     </UTabs>
-    <UButton color="neutral" variant="outline" class="w-full justify-center mt-4" @click="handleEditInPlayground">编辑该PlantUML</UButton>
+    <UButton color="neutral" icon="i-heroicons-arrow-top-right-on-square-16-solid" variant="outline" size="lg"
+      class="w-full justify-center mt-4" @click="handleEditInPlayground">编辑该PlantUML</UButton>
 
   </UCard>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
