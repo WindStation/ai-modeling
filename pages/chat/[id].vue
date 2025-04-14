@@ -111,7 +111,7 @@ const chatCompletion = async (isFirst: boolean | undefined = false) => {
   const messages = _buildQueryMessages()
   loadingCompletion.value = true
 
-  const response = await fetch('/api/chat', { // TODO debug
+  const response = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

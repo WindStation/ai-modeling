@@ -39,7 +39,7 @@ const generateUml = async () => {
   }
   // 加上分辨率设置，确保图表清晰
   const regex = /(@startuml\b.*?)(\r?\n)/
-  const targetPlantUml = plantuml.value.replace(regex, '$1$2skinparam dpi 300\n')
+  const targetPlantUml = plantuml.value.replace(regex, '$1$2skinparam dpi 150\n')
   try {
     isGenerating.value = true
     imageError.value = null
