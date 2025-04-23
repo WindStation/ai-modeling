@@ -15,7 +15,7 @@
           class="hidden sm:inline-flex"
       />
       <UButton
-          label="立即试用"
+          label="AI Modeling Chat"
           size="lg"
           color="primary"
           to="/chat"
@@ -29,5 +29,9 @@
 import { useUserStore } from "~/store/user";
 
 const userStore = useUserStore()
-const userAccount = userStore.user?.account
+const userAccount = computed(() => {
+  if (userStore.user) {
+    return userStore.user.account!
+  }
+})
 </script>

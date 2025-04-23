@@ -14,6 +14,10 @@ const userAccount = computed(() => {
   }
 })
 
+onMounted(() => {
+  userStore.info()
+})
+
 const menuItems = [
   {
     label: userAccount.value,
@@ -29,8 +33,11 @@ const menuItems = [
         }
       },
       {
-        label: "测试",
-        icon: "i-lucide-rocket"
+        label: "我的项目",
+        icon: "i-heroicons-cube",
+        onSelect: () => {
+          router.push("/project")
+        }
       }
     ]
   }

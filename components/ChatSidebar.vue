@@ -75,6 +75,13 @@ const menuItems = [
         onSelect: () => {
           console.log("退出登录")
         }
+      },
+      {
+        label: "我的项目",
+        icon: "i-heroicons-cube",
+        onSelect: () => {
+          router.push("/project")
+        }
       }
     ]
   }

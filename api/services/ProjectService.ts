@@ -2,85 +2,64 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateUmlDto } from '../models/CreateUmlDto';
-import type { Uml } from '../models/Uml';
-import type { UpdateUmlDto } from '../models/UpdateUmlDto';
+import type { CreateProjectDto } from '../models/CreateProjectDto';
+import type { Project } from '../models/Project';
+import type { UpdateProjectDto } from '../models/UpdateProjectDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class UmlService {
+export class ProjectService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @param requestBody
-     * @returns Uml OK
+     * @returns Project OK
      * @throws ApiError
      */
-    public updateUml(
-        requestBody: UpdateUmlDto,
-    ): CancelablePromise<Uml> {
+    public updateProject(
+        requestBody: UpdateProjectDto,
+    ): CancelablePromise<Project> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/uml/update',
+            url: '/api/project/update',
             body: requestBody,
             mediaType: 'application/json',
         });
     }
     /**
      * @param requestBody
-     * @returns binary OK
+     * @returns Project OK
      * @throws ApiError
      */
-    public generateUml(
-        requestBody: string,
-    ): CancelablePromise<Blob> {
+    public createProjectForSelf(
+        requestBody: CreateProjectDto,
+    ): CancelablePromise<Project> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/api/uml/generate',
-            body: requestBody,
-            mediaType: 'text/plain',
-        });
-    }
-    /**
-     * @param requestBody
-     * @returns Uml OK
-     * @throws ApiError
-     */
-    public createUml(
-        requestBody: CreateUmlDto,
-    ): CancelablePromise<Uml> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/api/project/uml',
+            url: '/api/self/project',
             body: requestBody,
             mediaType: 'application/json',
         });
     }
     /**
-     * @param id
-     * @returns Uml OK
+     * @returns Project OK
      * @throws ApiError
      */
-    public getUmlById(
-        id: number,
-    ): CancelablePromise<Uml> {
+    public getSelfProjects(): CancelablePromise<Array<Project>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/uml/{id}',
-            path: {
-                'id': id,
-            },
+            url: '/api/self/projects',
         });
     }
     /**
      * @param id
-     * @returns Uml OK
+     * @returns Project OK
      * @throws ApiError
      */
-    public getUmlsForProject(
+    public getProject(
         id: number,
-    ): CancelablePromise<Array<Uml>> {
+    ): CancelablePromise<Project> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/project/{id}/umls',
+            url: '/api/project/{id}',
             path: {
                 'id': id,
             },
@@ -91,12 +70,12 @@ export class UmlService {
      * @returns any OK
      * @throws ApiError
      */
-    public deleteUml(
+    public deleteProject(
         id: number,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
-            url: '/api/project/uml/{id}',
+            url: '/api/project/{id}',
             path: {
                 'id': id,
             },

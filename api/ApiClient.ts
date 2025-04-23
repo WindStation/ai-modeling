@@ -8,6 +8,7 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { AuthService } from './services/AuthService';
 import { ChatService } from './services/ChatService';
 import { MessageService } from './services/MessageService';
+import { ProjectService } from './services/ProjectService';
 import { UmlService } from './services/UmlService';
 import { UserService } from './services/UserService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -15,6 +16,7 @@ export class ApiClient {
     public readonly auth: AuthService;
     public readonly chat: ChatService;
     public readonly message: MessageService;
+    public readonly project: ProjectService;
     public readonly uml: UmlService;
     public readonly user: UserService;
     public readonly request: BaseHttpRequest;
@@ -33,6 +35,7 @@ export class ApiClient {
         this.auth = new AuthService(this.request);
         this.chat = new ChatService(this.request);
         this.message = new MessageService(this.request);
+        this.project = new ProjectService(this.request);
         this.uml = new UmlService(this.request);
         this.user = new UserService(this.request);
     }
