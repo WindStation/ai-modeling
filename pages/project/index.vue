@@ -81,7 +81,7 @@ onMounted(() => {
           <template #header>
             <div class="flex justify-between items-center">
               <h3 class="text-xl font-semibold">{{ project.name }}</h3>
-              <UDropdown
+              <UDropdownMenu
                 :items="[
                   {
                     label: '编辑',
@@ -100,7 +100,7 @@ onMounted(() => {
                   variant="ghost"
                   icon="i-heroicons-ellipsis-horizontal"
                 />
-              </UDropdown>
+              </UDropdownMenu>
             </div>
           </template>
 

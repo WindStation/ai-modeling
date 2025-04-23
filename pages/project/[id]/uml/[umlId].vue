@@ -48,7 +48,9 @@ async function fetchUml() {
     // 生成UML图片
     if (uml.value?.umlCode) {
       try {
-        umlImage.value = await generateUml(uml.value.umlCode)
+        const regex = /(@startuml\b.*?)(\r?\n)/
+        const targetPlantUml = uml.value.umlCode.replace(regex, '$1$2skinparam dpi 150\n')
+        umlImage.value = await generateUml(targetPlantUml)
         console.log('Generated UML image')
       } catch (error) {
         console.error('生成UML图片失败:', error)
@@ -115,7 +117,7 @@ onMounted(() => {
           </template>
           <UTextarea
             v-model="uml.umlCode"
-            class="font-mono"
+            class="font-mono w-full"
             :rows="20"
             readonly
           />
