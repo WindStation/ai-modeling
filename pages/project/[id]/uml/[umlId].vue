@@ -85,7 +85,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppHeader />
   <UContainer>
     <div class="py-8 space-y-6">
       <!-- 加载状态 -->
