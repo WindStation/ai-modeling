@@ -15,7 +15,8 @@ export const useChatStore = defineStore('chat', () => {
 - 请按照PlantUML的语法规范，生成正确的PlantUML语句。
 - 请使用最新的PlantUML规范。
 - 请确保生成的PlantUML语句符合用户的需求。
-- 请确保生成的PlantUML语句符合PlantUML的语法规范。`
+- 请确保生成的PlantUML语句符合PlantUML的语法规范。
+- 所有使用"\`\`\`plantuml 标签包裹起来的PlantUML代码，都必须是合法的、可以实际渲染的。如果你确实需要举出一个不完整的片段作为说明，请使用\`\`\`plaintext 标签去包裹它。"`
 
     // 用于embedding chat的prompt
     const embedPrompt: string = `请记住你的新身份：你是AI Modeling，一个软件建模辅助助手。请你按照如下指示进行任务。

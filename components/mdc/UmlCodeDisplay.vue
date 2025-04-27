@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useProjectStore } from '~/store/project'
+import AddToProjectModal from '~/components/AddUmlToProjectModal.vue'
+
 const props = defineProps<{
   code: string
 }>()
@@ -8,6 +11,7 @@ const { decode } = useTextCodec()
 const router = useRouter()
 
 const imageUrl = ref<string | undefined>(undefined)
+const addToProjectModal = ref<InstanceType<typeof AddToProjectModal> | null>(null)
 
 const handleUmlGenerate = async () => {
   const plantuml = decode(props.code)
@@ -21,10 +25,11 @@ const handleUmlGenerate = async () => {
     })
     console.error(error)
   }
-
 }
 
-onMounted(() => handleUmlGenerate())
+onMounted(async () => {
+  await handleUmlGenerate()
+})
 
 const tabItems = [
   {
@@ -46,6 +51,9 @@ const handleEditInPlayground = () => {
   })
 }
 
+const handleAddToProject = () => {
+  addToProjectModal.value?.openThisModal()
+}
 </script>
 
 <template>
@@ -59,9 +67,13 @@ const handleEditInPlayground = () => {
         <UButton v-else loading variant="ghost" color="neutral">加载中</UButton>
       </template>
     </UTabs>
-    <UButton color="neutral" icon="i-heroicons-arrow-top-right-on-square-16-solid" variant="outline" size="lg"
-      class="w-full justify-center mt-4" @click="handleEditInPlayground">编辑该PlantUML</UButton>
-
+    <div class="flex gap-2 mt-4">
+      <UButton color="neutral" icon="i-heroicons-arrow-top-right-on-square-16-solid" variant="outline" size="lg"
+        class="flex-1 justify-center" @click="handleEditInPlayground">编辑该PlantUML</UButton>
+      <UButton color="primary" icon="i-heroicons-plus-circle-16-solid" variant="outline" size="lg"
+        class="flex-1 justify-center" @click="handleAddToProject">添加到项目</UButton>
+    </div>
+    <AddToProjectModal ref="addToProjectModal" :uml-code="code" />
   </UCard>
 </template>
 

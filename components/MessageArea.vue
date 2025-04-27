@@ -13,14 +13,15 @@ const { encode } = useTextCodec()
 const umlParse = () => {
   // console.log(`uml parsing. ${props.chatMessage.content!}`)
   const contentToParse = props.chatMessage.content!
-  const regex = /```plantuml\n([\s\S]*?)\n```/g
+  const regex = /^\s*\t*```plantuml\n([\s\S]*?)\s*```/gm
   parsedContent.value = contentToParse.replace(regex, (match, code) => {
-    return `::uml-code-display{code="${encode(code)}"}\n${match}\n::`
+    return `\n::uml-code-display{code="${encode(code)}"}\n\`\`\`plantuml\n${code}\n\`\`\`\n::\n`
   })
 }
 
 if (props.chatMessage.role! === MessageRoleEnum.ASSISTANT && !props.loading) {
   umlParse()
+  // console.log(parsedContent.value)
 }
 
 // onMounted(() => {

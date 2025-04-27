@@ -1,44 +1,35 @@
 <template>
   <div class="p-4 space-y-2 flex flex-col  h-full">
     <div class="flex-1">
-      <AiModelingIcon/>
+      <AiModelingIcon />
 
-      <UButton
-          label="新对话"
-          icon="i-lucide-message-circle-code"
-          class="w-full h-15 text-lg my-5"
-          variant="soft"
-          @click="newChat"
-      />
-      <EditChatTitleModal ref="editModal" :chat-id="targetChatId" :origin-title="targetChatTitle"/>
-      <DeleteChatModal ref="deleteModal" :chat-id="targetChatId"/>
+      <UButton label="新对话" icon="i-lucide-message-circle-code" class="w-full h-15 text-lg my-5" variant="soft"
+        @click="newChat" />
+      <EditChatTitleModal ref="editModal" :chat-id="targetChatId" :origin-title="targetChatTitle" />
+      <DeleteChatModal ref="deleteModal" :chat-id="targetChatId" />
 
       <nav class="space-y-1 overflow-y-auto max-h-8/12">
-        <NuxtLink
-            v-for="chat in chatStore.chats"
-            :key="chat.id"
-            :to="`/chat/${chat.id}`"
-            class="flex justify-between items-center rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            :class="{
-          'bg-primary-50 dark:bg-primary-900': route.params.id === chat.id.toString()
-        }"
-        >
+        <NuxtLink v-for="chat in chatStore.chats" :key="chat.id" :to="`/chat/${chat.id}`"
+          class="flex justify-between items-center rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          :class="{
+            'bg-primary-50 dark:bg-primary-900': route.params.id === chat.id.toString()
+          }">
           <div class="text-md font-medium truncate overflow-x-clip">{{ chat.title }}</div>
           <UPopover>
-            <UButton size="sm" variant="ghost" color="neutral" icon="i-lucide-ellipsis-vertical"/>
+            <UButton size="sm" variant="ghost" color="neutral" icon="i-lucide-ellipsis-vertical" @click.prevent />
             <template #content>
               <UNavigationMenu class="p-2" orientation="vertical" :items="[
                 {
                   label: '修改标题',
                   icon: 'i-lucide-pen-line',
-                  onSelect: () => {handleOpenEditModal(chat.id, chat.title)}
+                  onSelect: () => { handleOpenEditModal(chat.id, chat.title) }
                 },
                 {
                   label: '删除聊天',
                   icon: 'i-lucide-trash-2',
-                  onSelect: () => {handleOpenDeleteModal(chat.id)}
+                  onSelect: () => { handleOpenDeleteModal(chat.id) }
                 }
-              ]"/>
+              ]" />
             </template>
           </UPopover>
         </NuxtLink>

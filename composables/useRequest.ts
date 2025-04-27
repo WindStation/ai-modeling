@@ -47,7 +47,7 @@ export class HttpRequestInterceptor extends BaseHttpRequest {
     }
 
     public override request<T>(options: ApiRequestOptions): CancelablePromise<T> {
-        console.log(`Request interceptor: ${JSON.stringify(options)}`);
+        // console.log(`Request interceptor: ${JSON.stringify(options)}`);
         return __request(this.config, options, this.axiosInstance)
     }
 }

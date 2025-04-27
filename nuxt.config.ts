@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   mdc: {
     highlight: {
-      langs: ['java']
+      langs: ['java', 'js', 'ts', 'vue', 'css', 'html'],
     },
   }
 })
