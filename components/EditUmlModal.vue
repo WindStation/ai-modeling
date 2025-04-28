@@ -4,31 +4,57 @@ import type { Uml } from "~/api/models/Uml";
 import type { UpdateUmlDto } from "~/api/models/UpdateUmlDto";
 
 const props = defineProps<{
-  uml: Uml
+  uml: Uml,
+  open: boolean
 }>()
 
-const emit = defineEmits(['uml-updated'])
+const emit = defineEmits(['uml-updated', 'close'])
 
 const umlStore = useUmlStore()
 
-const open = ref(false)
+const open = ref(props.open)
 const updatedUml = ref<UpdateUmlDto>({
   umlId: 0,
   title: '',
   umlCode: ''
 })
 
-const openThisModal = () => {
-  updatedUml.value = {
-    umlId: props.uml.id,
-    title: props.uml.title,
-    umlCode: props.uml.umlCode
+// const openThisModal = () => {
+//   updatedUml.value = {
+//     umlId: props.uml.id,
+//     title: props.uml.title,
+//     umlCode: props.uml.umlCode
+//   }
+//   // open.value = true
+// }
+
+watch(
+  [() => props.open, () => props.uml],
+  ([open]) => {
+    if (open && props.uml) {
+      updatedUml.value = {
+        umlId: props.uml.id,
+        title: props.uml.title,
+        umlCode: props.uml.umlCode
+      }
+    }
+  },
+  { immediate: true }
+)
+
+watch(open, () => {
+  if (!open.value) {
+    emit('close')
   }
-  open.value = true
-}
+})
+
+watchEffect(() => {
+  open.value = props.open
+})
 
 const closeThisModal = () => {
   open.value = false
+  emit('close')
 }
 
 const handleUpdateUml = async () => {
@@ -37,7 +63,8 @@ const handleUpdateUml = async () => {
   closeThisModal()
 }
 
-defineExpose({ openThisModal })
+// defineExpose({ openThisModal })
+
 </script>
 
 <template>

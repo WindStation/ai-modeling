@@ -18,6 +18,8 @@ const currentProject = ref<Project | null>(null)
 const createProjectModal = ref<InstanceType<typeof CreateProjectModal> | null>(null)
 const editProjectModal = ref<InstanceType<typeof EditProjectModal> | null>(null)
 
+const openEditModal = ref(false)
+
 const fetchProjects = async () => {
   try {
     await projectStore.fetchProjects()
@@ -32,7 +34,9 @@ const openCreateProjectModal = () => {
 
 const openEditProjectModal = (project: Project) => {
   currentProject.value = project
-  editProjectModal.value?.openThisModal()
+  console.log(currentProject.value)
+  openEditModal.value = true
+  // editProjectModal.value?.openThisModal()
 }
 
 const handleProjectClick = (project: Project) => {
@@ -62,44 +66,30 @@ onMounted(() => {
       <!-- 页面标题和新建按钮 -->
       <div class="flex justify-between items-center">
         <h1 class="text-3xl font-bold">我的项目</h1>
-        <UButton
-          color="primary"
-          icon="i-heroicons-plus"
-          @click="openCreateProjectModal"
-        >
+        <UButton color="primary" icon="i-heroicons-plus" @click="openCreateProjectModal">
           新建项目
         </UButton>
       </div>
 
       <!-- 项目列表 -->
       <div v-if="!projectStore.loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <UCard
-          v-for="project in projectStore.projects"
-          :key="project.id"
-          class="hover:shadow-lg transition-shadow"
-        >
+        <UCard v-for="project in projectStore.projects" :key="project.id" class="hover:shadow-lg transition-shadow">
           <template #header>
             <div class="flex justify-between items-center">
               <h3 class="text-xl font-semibold">{{ project.name }}</h3>
-              <UDropdownMenu
-                :items="[
-                  {
-                    label: '编辑',
-                    icon: 'i-heroicons-pencil',
-                    click: () => openEditProjectModal(project)
-                  },
-                  {
-                    label: '删除',
-                    icon: 'i-heroicons-trash',
-                    click: () => handleProjectDelete(project)
-                  }
-                ]"
-              >
-                <UButton
-                  color="neutral"
-                  variant="ghost"
-                  icon="i-heroicons-ellipsis-horizontal"
-                />
+              <UDropdownMenu :items="[
+                {
+                  label: '编辑',
+                  icon: 'i-heroicons-pencil',
+                  onSelect: () => openEditProjectModal(project)
+                },
+                {
+                  label: '删除',
+                  icon: 'i-heroicons-trash',
+                  onSelect: () => handleProjectDelete(project)
+                }
+              ]">
+                <UButton color="neutral" variant="ghost" icon="i-heroicons-ellipsis-horizontal" />
               </UDropdownMenu>
             </div>
           </template>
@@ -111,11 +101,7 @@ onMounted(() => {
               <span class="text-sm text-gray-500">
                 0 个UML图
               </span>
-              <UButton
-                color="primary"
-                variant="ghost"
-                :to="`/project/${project.id}`"
-              >
+              <UButton color="primary" variant="ghost" :to="`/project/${project.id}`">
                 查看详情
               </UButton>
             </div>
@@ -132,12 +118,8 @@ onMounted(() => {
       <CreateProjectModal ref="createProjectModal" @project-created="fetchProjects" />
 
       <!-- 编辑项目模态框 -->
-      <EditProjectModal 
-        v-if="currentProject"
-        ref="editProjectModal" 
-        :project="currentProject"
-        @project-updated="fetchProjects" 
-      />
+      <EditProjectModal v-if="currentProject" :open="openEditModal" ref="editProjectModal" :project="currentProject"
+        @project-updated="fetchProjects" @close="openEditModal = false" @updated="fetchProjects" />
     </div>
   </UContainer>
 </template>

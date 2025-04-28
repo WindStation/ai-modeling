@@ -17,5 +17,9 @@ export default defineNuxtConfig({
     highlight: {
       langs: ['java', 'js', 'ts', 'vue', 'css', 'html'],
     },
+  },
+  devServer: {
+    host: '0.0.0.0',
+    port: 3000,
   }
 })

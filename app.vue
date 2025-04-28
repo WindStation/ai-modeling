@@ -2,7 +2,7 @@
 import { useUserStore } from "~/store/user";
 
 const userStore = useUserStore()
-// onMounted(() => userStore.init())
+onMounted(() => userStore.init())
 </script>
 <!--<template>-->
 <!--  <NuxtLayout>-->

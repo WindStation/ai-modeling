@@ -21,6 +21,8 @@ const createUmlModal = ref<InstanceType<typeof CreateUmlModal> | null>(null)
 const editUmlModal = ref<InstanceType<typeof EditUmlModal> | null>(null)
 const deleteUmlModal = ref<InstanceType<typeof DeleteUmlModal> | null>(null)
 
+const openEditModal = ref(false)
+
 const fetchUmls = async () => {
   loading.value = true
   try {
@@ -29,7 +31,7 @@ const fetchUmls = async () => {
       throw new Error('Invalid project ID')
     }
     await umlStore.fetchUmls(projectId)
-    
+
     // 为每个UML生成图片
     for (const uml of umlStore.umls) {
       if (uml.umlCode) {
@@ -53,8 +55,11 @@ const openCreateUmlModal = () => {
 }
 
 const openEditUmlModal = (uml: Uml) => {
+  // const freshUml = umlStore.umls.find(u => u.id === uml.id)
   currentUml.value = uml
-  editUmlModal.value?.openThisModal()
+  console.log(currentUml.value)
+  openEditModal.value = true
+  // editUmlModal.value?.openThisModal()
 }
 
 const openDeleteUmlModal = (uml: Uml) => {
@@ -82,50 +87,27 @@ onMounted(() => {
 <template>
   <div class="space-y-6">
     <div class="flex justify-end">
-      <UButton
-        color="primary"
-        icon="i-heroicons-plus"
-        @click="openCreateUmlModal"
-      >
+      <UButton color="primary" icon="i-heroicons-plus" @click="openCreateUmlModal">
         新建UML图
       </UButton>
     </div>
 
     <!-- UML图列表 -->
     <div v-if="!loading && umlStore.umls.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <UCard
-        v-for="uml in umlStore.umls"
-        :key="uml.id"
-        class="hover:shadow-lg transition-shadow"
-      >
+      <UCard v-for="uml in umlStore.umls" :key="uml.id" class="hover:shadow-lg transition-shadow">
         <template #header>
           <div class="flex justify-between items-start">
             <h3 class="text-lg font-semibold">{{ uml.title }}</h3>
             <div class="flex space-x-2">
-              <UButton
-                icon="i-heroicons-pencil"
-                color="neutral"
-                variant="ghost"
-                @click="openEditUmlModal(uml)"
-              />
-              <UButton
-                icon="i-heroicons-trash"
-                color="error"
-                variant="ghost"
-                @click="openDeleteUmlModal(uml)"
-              />
+              <UButton icon="i-heroicons-pencil" color="neutral" variant="ghost" @click="openEditUmlModal(uml)" />
+              <UButton icon="i-heroicons-trash" color="error" variant="ghost" @click="openDeleteUmlModal(uml)" />
             </div>
           </div>
         </template>
 
         <!-- UML预览 -->
         <div class="mt-4">
-          <img
-            v-if="umlImages[uml.id]"
-            :src="umlImages[uml.id]"
-            :alt="uml.title"
-            class="w-full rounded-lg"
-          />
+          <img v-if="umlImages[uml.id]" :src="umlImages[uml.id]" :alt="uml.title" class="w-full rounded-lg" />
           <div v-else class="flex justify-center items-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg">
             <UIcon name="i-heroicons-arrow-path" class="animate-spin text-4xl" />
           </div>
@@ -133,11 +115,7 @@ onMounted(() => {
 
         <template #footer>
           <div class="flex justify-end">
-            <UButton
-              color="primary"
-              variant="ghost"
-              @click="openUmlDetail(uml)"
-            >
+            <UButton color="primary" variant="ghost" @click="openUmlDetail(uml)">
               查看详情
             </UButton>
           </div>
@@ -157,22 +135,9 @@ onMounted(() => {
     </template>
 
     <!-- 新建UML图模态框 -->
-    <CreateUmlModal 
-      ref="createUmlModal" 
-      :project-id="Number(route.params.id)" 
-      @uml-created="fetchUmls" 
-    />
-    <EditUmlModal 
-      v-if="currentUml"
-      ref="editUmlModal" 
-      :uml="currentUml"
-      @uml-updated="fetchUmls" 
-    />
-    <DeleteUmlModal 
-      v-if="currentUml"
-      ref="deleteUmlModal" 
-      :uml="currentUml"
-      @uml-deleted="fetchUmls" 
-    />
+    <CreateUmlModal ref="createUmlModal" :project-id="Number(route.params.id)" @uml-created="fetchUmls" />
+    <EditUmlModal v-if="currentUml" :open="openEditModal" ref="editUmlModal" :uml="currentUml" @uml-updated="fetchUmls"
+      @close="openEditModal = false" />
+    <DeleteUmlModal v-if="currentUml" ref="deleteUmlModal" :uml="currentUml" @uml-deleted="fetchUmls" />
   </div>
 </template>

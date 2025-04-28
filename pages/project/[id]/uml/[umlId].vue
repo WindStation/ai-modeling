@@ -30,6 +30,7 @@ const uml = ref<Uml | null>(null)
 const loading = ref(false)
 const umlImage = ref<string | null>(null)
 const editUmlModal = ref<InstanceType<typeof EditUmlModal> | null>(null)
+const openEditModal = ref(false)
 
 // 获取UML图详情
 async function fetchUml() {
@@ -44,7 +45,7 @@ async function fetchUml() {
     await umlStore.fetchUml(umlId.value)
     uml.value = umlStore.currentUml
     console.log('Fetched UML:', uml.value)
-    
+
     // 生成UML图片
     if (uml.value?.umlCode) {
       try {
@@ -64,9 +65,10 @@ async function fetchUml() {
 }
 
 // 打开编辑模态框
-function openEditModal() {
+function openEditUmlModal() {
+  console.log(uml.value)
   if (uml.value) {
-    editUmlModal.value?.openThisModal()
+    openEditModal.value = true
   }
 }
 
@@ -98,11 +100,7 @@ onMounted(() => {
       <div v-else-if="uml" class="space-y-4">
         <div class="flex justify-between items-center">
           <h1 class="text-3xl font-bold">{{ uml.title }}</h1>
-          <UButton
-            color="primary"
-            icon="i-heroicons-pencil"
-            @click="openEditModal"
-          >
+          <UButton color="primary" icon="i-heroicons-pencil" @click="openEditUmlModal">
             编辑
           </UButton>
         </div>
@@ -115,12 +113,7 @@ onMounted(() => {
           <template #header>
             <h3 class="text-xl font-semibold">PlantUML代码</h3>
           </template>
-          <UTextarea
-            v-model="uml.umlCode"
-            class="font-mono w-full"
-            :rows="20"
-            readonly
-          />
+          <UTextarea v-model="uml.umlCode" class="font-mono w-full" :rows="20" readonly />
         </UCard>
 
         <!-- 预览 -->
@@ -128,12 +121,7 @@ onMounted(() => {
           <template #header>
             <h3 class="text-xl font-semibold">预览</h3>
           </template>
-          <img
-            v-if="umlImage"
-            :src="umlImage"
-            :alt="uml.title"
-            class="w-full rounded-lg"
-          />
+          <img v-if="umlImage" :src="umlImage" :alt="uml.title" class="w-full rounded-lg" />
           <div v-else class="flex justify-center items-center h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
             <UIcon name="i-heroicons-arrow-path" class="animate-spin text-4xl" />
           </div>
@@ -141,12 +129,8 @@ onMounted(() => {
       </div>
 
       <!-- 编辑模态框 -->
-      <EditUmlModal 
-        v-if="uml"
-        ref="editUmlModal" 
-        :uml="uml"
-        @uml-updated="fetchUml" 
-      />
+      <EditUmlModal v-if="uml" :open="openEditModal" ref="editUmlModal" :uml="uml" @uml-updated="fetchUml"
+        @close="openEditModal = false" />
     </div>
   </UContainer>
-</template> 
+</template>
