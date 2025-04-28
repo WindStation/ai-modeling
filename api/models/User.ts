@@ -11,8 +11,8 @@ export type User = {
     username: string;
     authorities: Array<GrantedAuthority>;
     enabled?: boolean;
+    accountNonLocked?: boolean;
     credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
-    accountNonLocked?: boolean;
 };
 

@@ -99,7 +99,7 @@ onMounted(() => {
           <template #footer>
             <div class="flex justify-between items-center">
               <span class="text-sm text-gray-500">
-                0 个UML图
+                {{ project.umlCount }} 个UML图
               </span>
               <UButton color="primary" variant="ghost" :to="`/project/${project.id}`">
                 查看详情

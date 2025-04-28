@@ -8,5 +8,6 @@ export type Project = {
     description?: string;
     createdAt: string;
     updatedAt: string;
+    umlCount: number;
 };
 
