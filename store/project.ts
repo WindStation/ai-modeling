@@ -31,12 +31,14 @@ export const useProjectStore = defineStore('project', () => {
   // 创建项目
   async function createProject(data: CreateProjectDto) {
     loading.value = true
+    let project = undefined
     try {
-      await apiClient.project.createProjectForSelf(data)
+      project = await apiClient.project.createProjectForSelf(data)
       await fetchProjects()
     } finally {
       loading.value = false
     }
+    return project
   }
 
   // 更新项目

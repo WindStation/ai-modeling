@@ -40,18 +40,14 @@ defineExpose({ openThisModal })
 </script>
 
 <template>
-  <UModal v-model:open="open" title="创建UML" :ui="{footer: 'justify-end'}">
+  <UModal v-model:open="open" title="创建UML" :ui="{ footer: 'justify-end' }">
     <template #body>
       <UContainer as="div" class="space-y-4">
         <UFormField label="UML名称" required>
           <UInput v-model="newUml.title" placeholder="请输入UML名称" />
         </UFormField>
         <UFormField label="UML代码">
-          <UTextarea
-            v-model="newUml.umlCode"
-            placeholder="请输入UML代码"
-            :rows="10"
-          />
+          <UTextarea v-model="newUml.umlCode" placeholder="请输入UML代码" :rows="10" />
         </UFormField>
       </UContainer>
     </template>
@@ -62,5 +58,4 @@ defineExpose({ openThisModal })
   </UModal>
 </template>
 
-<style scoped>
-</style> 
+<style scoped></style>

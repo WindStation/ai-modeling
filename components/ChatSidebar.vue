@@ -49,6 +49,7 @@ const route = useRoute()
 const router = useRouter()
 
 const chatStore = useChatStore()
+const userStore = useUserStore()
 
 const menuItems = [
   {
@@ -57,21 +58,21 @@ const menuItems = [
     to: "/playground",
   },
   {
-    label: "用户",
+    label: userStore.user?.account,
     icon: "i-material-symbols-person",
     children: [
-      {
-        label: "退出登录",
-        icon: "i-material-symbols-exit-to-app",
-        onSelect: () => {
-          console.log("退出登录")
-        }
-      },
       {
         label: "我的项目",
         icon: "i-heroicons-cube",
         onSelect: () => {
           router.push("/project")
+        }
+      },
+      {
+        label: "退出登录",
+        icon: "i-material-symbols-exit-to-app",
+        onSelect: () => {
+          console.log("退出登录")
         }
       }
     ]

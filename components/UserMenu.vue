@@ -24,6 +24,20 @@ const menuItems = [
     icon: "i-material-symbols-person",
     children: [
       {
+        label: "我的项目",
+        icon: "i-heroicons-cube",
+        onSelect: () => {
+          router.push("/project")
+        }
+      },
+      {
+        label: "Playground",
+        icon: "i-lucide-rocket",
+        onSelect: () => {
+          router.push("/playground")
+        }
+      },
+      {
         label: "退出登录",
         icon: "i-material-symbols-exit-to-app",
         onSelect: () => {
@@ -32,13 +46,7 @@ const menuItems = [
           router.push("/logout")
         }
       },
-      {
-        label: "我的项目",
-        icon: "i-heroicons-cube",
-        onSelect: () => {
-          router.push("/project")
-        }
-      }
+
     ]
   }
 ]

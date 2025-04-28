@@ -2,6 +2,7 @@
 import { useProjectStore } from "~/store/project";
 import { useUmlStore } from "~/store/uml";
 import type { CreateUmlDto } from "~/api/models/CreateUmlDto";
+import type { CreateProjectModal } from "#components";
 
 const props = defineProps<{
     umlCode: string
@@ -10,6 +11,12 @@ const props = defineProps<{
 const projectStore = useProjectStore()
 const umlStore = useUmlStore()
 const { decode } = useTextCodec()
+
+const createProjectModal = ref<InstanceType<typeof CreateProjectModal> | null>(null)
+
+const openCreateProjectModal = () => {
+    createProjectModal.value?.openThisModal()
+}
 
 const open = ref(false)
 const selectedProjectId = ref<number | undefined>(undefined)
@@ -58,6 +65,11 @@ const handleCreateUml = async () => {
 
     newUml.value.projectId = selectedProjectId.value
     await umlStore.createUml(newUml.value)
+    useToast().add({
+        title: '添加成功',
+        description: 'UML图已成功添加到项目中',
+        color: 'success'
+    })
     closeThisModal()
 }
 
@@ -68,6 +80,9 @@ defineExpose({ openThisModal })
     <UModal v-model:open="open" title="添加到项目" :ui="{ footer: 'justify-end' }">
         <template #body>
             <UContainer as="div" class="space-y-4">
+                <UButton color="neutral" @click="openCreateProjectModal">
+                    立刻新建项目
+                </UButton>
                 <UFormField label="选择项目" required>
                     <USelect v-model="selectedProjectId"
                         :items="projectStore.projects.map(p => ({ label: p.name, value: p.id }))" placeholder="请选择项目" />
@@ -82,6 +97,7 @@ defineExpose({ openThisModal })
             <UButton label="添加" color="primary" @click="handleCreateUml" />
         </template>
     </UModal>
+    <CreateProjectModal ref="createProjectModal" @project-created="projectStore.fetchProjects" />
 </template>
 
 <style scoped></style>
