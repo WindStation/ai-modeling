@@ -10,11 +10,13 @@ export const useUserStore = defineStore("user", () => {
             username: username, password: password
         })
         localStorage.setItem("token", token.accessToken)
+        localStorage.setItem("refreshToken", token.refreshToken)
     }
 
     async function logout() {
         user.value = null
         localStorage.removeItem("token")
+        localStorage.removeItem("refreshToken")
     }
 
     async function register(username: string, password: string) {

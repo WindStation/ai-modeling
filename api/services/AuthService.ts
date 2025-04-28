@@ -29,6 +29,21 @@ export class AuthService {
      * @returns TokenResponseDto OK
      * @throws ApiError
      */
+    public refresh(
+        requestBody: string,
+    ): CancelablePromise<TokenResponseDto> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/auth/refresh',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns TokenResponseDto OK
+     * @throws ApiError
+     */
     public login(
         requestBody: LoginRequestDto,
     ): CancelablePromise<TokenResponseDto> {
