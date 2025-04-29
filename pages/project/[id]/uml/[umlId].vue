@@ -4,6 +4,7 @@ import type { UpdateUmlDto } from '~/api/models/UpdateUmlDto'
 import { useUmlStore } from '~/store/uml'
 import { useUmlGenerator } from '~/composables/useUmlGenerator'
 import EditUmlModal from '~/components/EditUmlModal.vue'
+import { useProjectStore } from '~/store/project'
 
 useHead({
   title: "UML图详情 - AI Modeling"
@@ -25,6 +26,8 @@ watch([projectId, umlId], ([newProjectId, newUmlId]) => {
 }, { immediate: true })
 
 const umlStore = useUmlStore()
+const projectStore = useProjectStore()
+const currentProject = computed(() => projectStore.projects.find(p => p.id === projectId.value))
 const { generate: generateUml } = useUmlGenerator()
 const uml = ref<Uml | null>(null)
 const loading = ref(false)
@@ -62,6 +65,16 @@ async function fetchUml() {
   } finally {
     loading.value = false
   }
+}
+
+// 下载图片
+const downloadImage = () => {
+  const link = document.createElement('a')
+  link.href = umlImage.value!
+  link.download = `uml-${currentProject.value?.name}-${uml.value?.title}-${Date.now()}.png`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 }
 
 // 打开编辑模态框
@@ -113,7 +126,21 @@ onMounted(() => {
           <template #header>
             <h3 class="text-xl font-semibold">PlantUML代码</h3>
           </template>
-          <UTextarea v-model="uml.umlCode" class="font-mono w-full" :rows="20" readonly />
+          <UTextarea v-model="uml.umlCode" class="font-mono w-full" :rows="40" readonly />
+          <template #footer>
+            <div class="flex justify-center">
+              <UDrawer direction="right">
+                <UButton class="flex flex-1 justify-center" size="xl" color="neutral" variant="outline">
+                  遇到问题？问问 Modeling Chat!
+                </UButton>
+                <template #content>
+                  <EmbeddedChat :plantuml-code="uml.umlCode!" />
+                </template>
+              </UDrawer>
+            </div>
+
+          </template>
+
         </UCard>
 
         <!-- 预览 -->
@@ -121,10 +148,15 @@ onMounted(() => {
           <template #header>
             <h3 class="text-xl font-semibold">预览</h3>
           </template>
-          <img v-if="umlImage" :src="umlImage" :alt="uml.title" class="w-full rounded-lg" />
+          <img v-if="umlImage" :src="umlImage" :alt="uml.title" />
           <div v-else class="flex justify-center items-center h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
             <UIcon name="i-heroicons-arrow-path" class="animate-spin text-4xl" />
           </div>
+          <template #footer>
+            <div class="flex justify-center">
+              <UButton size="xl" icon="i-lucide-download" @click="downloadImage" color="neutral">下载图片</UButton>
+            </div>
+          </template>
         </UCard>
       </div>
 

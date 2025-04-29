@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AddUmlToProjectModal } from "#components";
 import { useUserStore } from "~/store/user";
 
 useHead({
@@ -8,7 +9,7 @@ useHead({
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const { decode } = useTextCodec()
+const { encode, decode } = useTextCodec()
 
 const userAccount = computed(() => {
   if (userStore.user) {
@@ -107,6 +108,12 @@ const copyToClipboard = async () => {
   }
 }
 
+const addToProjectModal = ref<InstanceType<typeof AddUmlToProjectModal> | null>(null)
+
+const handleAddToProject = () => {
+  addToProjectModal.value?.openThisModal()
+}
+
 // 组件卸载时清理资源
 onBeforeUnmount(() => {
   if (imageUrl.value) {
@@ -116,28 +123,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <UHeader>
-    <template #title>
-      <AiModelingIcon />
-    </template>
-
-    <UContainer as="h2" class="text-2xl font-bold ">Playground</UContainer>
-
-    <template #right>
-      <!--      <UNavigationMenu v-if="userStore.isLogin" :items="menuItems" content-orientation="vertical" class="w-full justify-end" />-->
-      <UserMenu v-if="userAccount" orientation="vertical" class="w-full justify-end" />
-      <UButton v-else size="lg">
-        <NuxtLink to="/login">登录</NuxtLink>
-      </UButton>
-      <div
-        class="border-2 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 border-transparent bg-clip-border whitespace-nowrap">
-        <UButton class="justify-center rounded-md bg-white px-4" color="neutral" variant="ghost" size="lg" to="/chat">
-          <UIcon name="i-lucide-message-circle-code" class="mr-2" />
-          <span>AI Modeling Chat</span>
-        </UButton>
-      </div>
-    </template>
-  </UHeader>
+  <AppHeader title="Playground" />
 
   <UContainer class="max-w-[100rem] flex gap-2 my-10 ">
     <UCard class="w-7/12 gap-2">
@@ -171,11 +157,15 @@ onBeforeUnmount(() => {
         <img :src="imageUrl" alt="UML图" @load="handleImageLoad" @error="handleImageError" />
       </div>
       <template #footer v-if="imageUrl !== null">
-        <div class="flex justify-center">
-          <UButton size="xl" icon="i-lucide-download" @click="downloadImage">下载图片</UButton>
+        <div class="flex flex-col gap-5 justify-center">
+          <UButton size="xl" icon="i-lucide-download" @click="downloadImage" class="flex-1 justify-center">下载图片
+          </UButton>
+          <UButton color="primary" icon="i-heroicons-plus-circle-16-solid" variant="outline" size="lg"
+            class="flex-1 justify-center" @click="handleAddToProject">添加到项目</UButton>
         </div>
       </template>
     </UCard>
+    <AddUmlToProjectModal ref="addToProjectModal" :uml-code="encode(plantuml)" />
   </UContainer>
 </template>
 
