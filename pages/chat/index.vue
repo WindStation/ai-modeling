@@ -34,15 +34,15 @@ async function createChat(text: string) {
 
       <ul class="space-y-3 pl-5 text-xl my-6">
         <li class="flex items-center gap-2">
-          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-emerald-600" size="25" />
+          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-primary-600" size="25" />
           我要设计一个餐饮管理系统。请你帮我分析其中可能需要的类，并构建一个类图......
         </li>
         <li class="flex items-center gap-2">
-          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-emerald-600" size="25" />
+          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-primary-600" size="25" />
           现在这份 PlantUML 代码有报错。请你帮我更正一下......
         </li>
         <li class="flex items-center gap-2">
-          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-emerald-600" size="25" />
+          <UIcon name="i-material-symbols-tips-and-updates-outline-rounded" class="text-primary-600" size="25" />
           请你构建一个描绘前后端分离系统中，用户登录过程的时序图......
         </li>
       </ul>

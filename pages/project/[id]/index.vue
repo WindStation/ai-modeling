@@ -107,7 +107,7 @@ onMounted(() => {
 
         <!-- UML预览 -->
         <div class="mt-4">
-          <img v-if="umlImages[uml.id]" :src="umlImages[uml.id]" :alt="uml.title" class="w-full rounded-lg" />
+          <img v-if="umlImages[uml.id]" :src="umlImages[uml.id]" :alt="uml.title" class="rounded-lg" />
           <div v-else class="flex justify-center items-center h-32 bg-gray-100 dark:bg-gray-800 rounded-lg">
             <UIcon name="i-heroicons-arrow-path" class="animate-spin text-4xl" />
           </div>

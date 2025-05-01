@@ -51,6 +51,12 @@ const router = useRouter()
 const chatStore = useChatStore()
 const userStore = useUserStore()
 
+const currentUsername = computed(() => {
+  if (userStore.user) {
+    return userStore.user.account!
+  }
+})
+
 const menuItems = [
   {
     label: "在线编辑器",
@@ -58,7 +64,7 @@ const menuItems = [
     to: "/playground",
   },
   {
-    label: userStore.user?.account,
+    label: currentUsername,
     icon: "i-material-symbols-person",
     children: [
       {
@@ -72,7 +78,8 @@ const menuItems = [
         label: "退出登录",
         icon: "i-material-symbols-exit-to-app",
         onSelect: () => {
-          console.log("退出登录")
+          userStore.logout()
+          router.push("/logout")
         }
       }
     ]

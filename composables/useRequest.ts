@@ -185,7 +185,7 @@ export class HttpRequestInterceptor extends BaseHttpRequest {
 
 export const apiClient = new ApiClient({
     WITH_CREDENTIALS: true,
-    BASE: "http://localhost:8080",
+    BASE: "http://192.168.195.87:8080",
 }, HttpRequestInterceptor)
 
 export const apiService = {
