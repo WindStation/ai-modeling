@@ -70,15 +70,15 @@ const pngs = [
             </UContainer>
             <ul class="space-y-3 pl-5 text-lg">
               <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-check-circle" class="text-emerald-600" size="20" />
+                <UIcon name="i-heroicons-check-circle" class="text-primary-600" size="20" />
                 自然语言转UML图表
               </li>
               <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-check-circle" class="text-emerald-600" size="20" />
+                <UIcon name="i-heroicons-check-circle" class="text-primary-600" size="20" />
                 多模型智能修正
               </li>
               <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-check-circle" class="text-emerald-600" size="20" />
+                <UIcon name="i-heroicons-check-circle" class="text-primary-600" size="20" />
                 管理所有历史UML图表
               </li>
             </ul>

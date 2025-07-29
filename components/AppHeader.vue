@@ -28,6 +28,8 @@ const userStore = useUserStore()
 const userAccount = computed(() => {
   if (userStore.user) {
     return userStore.user.account!
+  } else {
+    return null
   }
 })
 </script>
