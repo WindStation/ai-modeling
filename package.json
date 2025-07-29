@@ -10,11 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/content": "^3.5.1",
     "@nuxt/ui-pro": "^3.0.0",
     "@nuxtjs/mdc": "^0.15.0",
     "@pinia/nuxt": "^0.10.1",
     "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.8.3",
+    "json-bigint": "^1.0.0",
     "nuxt": "^3.16.0",
     "openai": "^4.87.3",
     "openapi-typescript-codegen": "^0.29.0",

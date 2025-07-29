@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useProjectStore } from '~/store/project'
 import AddToProjectModal from '~/components/AddUmlToProjectModal.vue'
 
 const props = defineProps<{

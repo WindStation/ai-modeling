@@ -118,7 +118,7 @@ const fetchStream = async () => {
         :chat-message="{ role: MessageRoleEnum.ASSISTANT, content: block }" class="w-full" />
       <MessageArea v-if="chatStore.streamingMsg" loading
         :chat-message="{ role: MessageRoleEnum.ASSISTANT, content: chatStore.streamingMsg! }" />
-
+      <MDC :value="mockData"></MDC>
 
     </UCard>
   </UApp>
