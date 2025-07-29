@@ -6,7 +6,7 @@
 
 **AI Modeling**是一款利用 *LLM能力* 和 *PlantUML* 构建的软件建模辅助工具，为开发者提供一个“需求→自动建模→预览→优化→管理”的完整工作流。若您对PlantUML很熟悉，也可以手动编辑代码。
 
-### 后端工程详情 Backend (this repo)
+### 前端工程详情 Frontend (this repo)
 
 本仓库存储了AI Modeling的前端代码。
 
